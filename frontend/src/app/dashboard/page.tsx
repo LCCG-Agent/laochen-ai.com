@@ -326,9 +326,11 @@ export default function Dashboard() {
   const allItems = Object.values(DASHBOARD_DATA).flat();
   const totalNew = allItems.filter(item => item.is_new).length;
   const totalHigh = allItems.filter(item => 
-    item.priority === 'high' || item.importance === 'high' || item.risk_level === '高'
+    ('priority' in item && item.priority === 'high') || 
+    ('importance' in item && item.importance === 'high') || 
+    ('risk_level' in item && item.risk_level === '高')
   ).length;
-  const totalUrgent = allItems.filter(item => item.risk_level === '高').length;
+  const totalUrgent = allItems.filter(item => 'risk_level' in item && item.risk_level === '高').length;
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
