@@ -19,7 +19,7 @@ NC='\033[0m' # No Color
 GITHUB_REPO="https://github.com/LCCG-Agent/laochen-ai.com.git"
 PROJECT_DIR="/home/ubuntu/laochen-ai.com"
 BRANCH="main"
-FRONTEND_PORT=3000
+FRONTEND_PORT=80
 BACKEND_PORT=8000
 DB_PORT=5432
 
@@ -226,7 +226,7 @@ POSTGRES_PASSWORD=postgres123
 
 # 后端配置
 DATABASE_URL=postgresql://postgres:postgres123@db:5432/laochen_ai
-FRONTEND_URL=http://101.34.79.228:${FRONTEND_PORT}
+FRONTEND_URL=http://101.34.79.228
 
 # 前端配置
 NEXT_PUBLIC_API_URL=http://101.34.79.228:${BACKEND_PORT}
@@ -304,10 +304,10 @@ echo "  🎉 部署完成！"
 echo "========================================"
 echo ""
 echo "📌 服务信息："
-echo "   - 前端地址：http://101.34.79.228:${FRONTEND_PORT}"
+echo "   - 前端地址：http://101.34.79.228 (端口80，用于备案)"
 echo "   - 后端API：http://101.34.79.228:${BACKEND_PORT}"
 echo "   - API文档：http://101.34.79.228:${BACKEND_PORT}/docs"
-echo "   - 数据库端口：${DB_PORT}"
+echo "   - 数据库端口：${DB_PORT} (仅内部访问)"
 echo ""
 echo "📌 常用命令："
 echo "   - 查看所有日志：docker compose logs -f"
@@ -319,14 +319,16 @@ echo "   - 查看状态：docker compose ps"
 echo ""
 echo "📌 下一步："
 echo "   1. 在腾讯云控制台开放端口："
-echo "      - ${FRONTEND_PORT} (前端)"
-echo "      - ${BACKEND_PORT} (后端)"
-echo "      - ${DB_PORT} (数据库，可选)"
-echo "   2. 访问前端测试：http://101.34.79.228:${FRONTEND_PORT}"
+echo "      - 80 (HTTP，必须，用于备案)"
+echo "      - 443 (HTTPS，建议，用于SSL)"
+echo "      - ${BACKEND_PORT} (后端API)"
+echo "   2. 访问前端测试：http://101.34.79.228"
 echo "   3. 如遇问题，查看日志：docker compose logs -f"
 echo ""
-print_warning "⚠️ 重要提示："
-echo "   - 确保防火墙已开放相应端口"
-echo "   - 首次访问可能需要几秒钟启动时间"
-echo "   - 如需配置域名和HTTPS，请配置Nginx反向代理"
+print_warning "⚠️ 备案重要提示："
+echo "   - ✅ 已配置80端口（HTTP标准端口）"
+echo "   - 🔒 建议配置443端口和SSL证书（HTTPS）"
+echo "   - 📝 确保网站内容符合备案要求"
+echo "   - 🏷️  在网站底部添加ICP备案号"
+echo "   - 📞 备案期间网站必须可访问"
 echo ""

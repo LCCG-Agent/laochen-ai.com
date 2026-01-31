@@ -21,18 +21,18 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres123@db:5432/laochen_ai
-      FRONTEND_URL: http://localhost:3000
+      FRONTEND_URL: http://101.34.79.228
     depends_on:
       - db
     restart: unless-stopped
 
-  # Next.js前端
+  # Next.js前端 (使用80端口用于备案)
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "80:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_API_URL: http://101.34.79.228:8000
     depends_on:
       - backend
     restart: unless-stopped
