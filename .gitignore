@@ -1,0 +1,16 @@
+# 内部文档（不上传到Git）
+项目文档-内部使用.md
+服务器信息移交文档.md
+部署操作指南.md
+
+# 临时文件
+*.tmp
+*.bak
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.cursor/
