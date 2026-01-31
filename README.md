@@ -113,19 +113,68 @@ uvicorn app.main:app --reload
 
 ```bash
 # 构建并启动（数据库+后端+前端）
-docker-compose up -d
+docker compose up -d
 
 # 查看日志
-docker-compose logs -f
+docker compose logs -f
 
 # 停止
-docker-compose down
+docker compose down
 ```
 
 访问:
 - 前端: http://localhost:3000
 - 后端: http://localhost:8000
 - 数据库: localhost:5432
+
+---
+
+## 🌐 服务器部署
+
+### 快速部署到生产环境
+
+本项目已配置腾讯云服务器一键部署方案：
+
+#### 1. 本地推送到 GitHub
+```bash
+# Windows: 双击运行
+deploy-to-github.bat
+
+# 或手动执行
+git add .
+git commit -m "更新说明"
+git push origin main
+```
+
+#### 2. 服务器部署
+```bash
+# SSH连接服务器
+ssh ubuntu@101.34.79.228
+
+# 运行一键部署脚本
+curl -o ~/deploy-server.sh https://raw.githubusercontent.com/LCCG-Agent/laochen-ai.com/main/deploy-server.sh
+chmod +x ~/deploy-server.sh
+./deploy-server.sh
+```
+
+#### 3. 访问生产环境
+- 前端: http://101.34.79.228:3000
+- 后端: http://101.34.79.228:8000
+- API文档: http://101.34.79.228:8000/docs
+
+### 部署文档
+
+| 文档 | 说明 |
+|------|------|
+| `QUICK-START.md` | 快速部署参考卡（推荐） |
+| `DEPLOYMENT.md` | 完整部署指南 |
+| `deploy-to-github.bat` | Windows本地一键上传脚本 |
+| `deploy-server.sh` | 服务器一键部署脚本 |
+
+> 💡 **首次部署提示**: 
+> - 需要 GitHub Personal Access Token
+> - 需要在腾讯云控制台开放端口 3000 和 8000
+> - 详见 `DEPLOYMENT.md`
 
 ---
 

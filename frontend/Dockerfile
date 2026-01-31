@@ -1,17 +1,17 @@
-# 使用官方Node.js镜像
-FROM node:18-alpine
+# Next.js 前端 Dockerfile
+FROM node:20-alpine
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制package文件
-COPY frontend/package*.json ./
+# 复制 package 文件
+COPY package*.json ./
 
 # 安装依赖
 RUN npm install
 
 # 复制项目文件
-COPY frontend/ ./
+COPY . .
 
 # 构建生产版本
 RUN npm run build

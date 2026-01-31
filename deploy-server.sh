@@ -1,8 +1,10 @@
 #!/bin/bash
 
-# 老陈AI工坊 - 服务器一键部署脚本
-# 版本: V2.0 - 专为 laochen-AI 项目定制
-# 功能: 从GitHub拉取代码并部署到Docker
+#####################################################
+# 老陈AI工坊 - 服务器端一键部署脚本
+# 适用于腾讯云轻量应用服务器 (Ubuntu 22.04)
+# 版本: V2.0
+#####################################################
 
 set -e  # 遇到错误立即退出
 
@@ -13,103 +15,210 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# ⚠️ 重要配置项 - 首次使用请修改这里！
-# ============================================
-PROJECT_NAME="laochen-AI"
-REPO_URL="https://github.com/LCCG-Agent/laochen-ai.com.git"  # ⚠️ 请修改为你的GitHub仓库地址（如: https://github.com/username/laochen-AI.git）
-BRANCH="main"  # Git分支名称（如果你的仓库使用 master 分支，请改为 "master"）
-# ============================================
+# 配置变量
+GITHUB_REPO="https://github.com/LCCG-Agent/laochen-ai.com.git"
+PROJECT_DIR="/home/ubuntu/laochen-ai.com"
+BRANCH="main"
+FRONTEND_PORT=3000
+BACKEND_PORT=8000
+DB_PORT=5432
 
-# 自动配置项（一般不需要修改）
-DEPLOY_DIR="/home/ubuntu/${PROJECT_NAME}"
-PORT=3000  # 前端端口
-BACKEND_PORT=8000  # 后端端口
-DB_PORT=5432  # 数据库端口
+# 打印带颜色的消息
+print_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
 
-echo -e "${BLUE}========================================"
+print_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# 打印标题
+echo "========================================"
 echo "  老陈AI工坊 - 服务器部署脚本"
-echo "  版本: V1.0"
-echo "  项目: ${PROJECT_NAME}"
-echo "========================================${NC}"
+echo "  版本: V2.0"
+echo "========================================"
 echo ""
 
-# 步骤1: 检查Docker环境
-echo -e "${YELLOW}[1/8] 检查Docker环境...${NC}"
+# 1. 检查并安装 Docker
+print_info "检查 Docker 安装状态..."
 if ! command -v docker &> /dev/null; then
-    echo -e "${RED}❌ Docker未安装，请先安装Docker${NC}"
-    exit 1
-fi
-if ! command -v docker compose &> /dev/null; then
-    echo -e "${RED}❌ Docker Compose未安装${NC}"
-    exit 1
-fi
-echo -e "${GREEN}✅ Docker环境正常${NC}"
-echo ""
-
-# 步骤2: 停止旧容器（如果存在）
-echo -e "${YELLOW}[2/8] 停止旧容器...${NC}"
-if [ -d "$DEPLOY_DIR" ]; then
-    cd "$DEPLOY_DIR"
-    if [ -f "docker-compose.yml" ]; then
-        echo "停止现有容器..."
-        docker compose down || true
-        echo -e "${GREEN}✅ 旧容器已停止${NC}"
-    fi
-else
-    echo "首次部署，跳过停止步骤"
-fi
-echo ""
-
-# 步骤3: 备份数据（如果存在）
-echo -e "${YELLOW}[3/8] 备份数据...${NC}"
-if [ -d "$DEPLOY_DIR/backend" ]; then
-    BACKUP_FILE="$HOME/laochen-ai-backup-$(date +%Y%m%d-%H%M%S).tar.gz"
-    echo "备份数据库到: $BACKUP_FILE"
-    tar -czf "$BACKUP_FILE" -C "$DEPLOY_DIR/backend" laochen_ai.db 2>/dev/null || echo "没有数据库文件需要备份"
-    echo -e "${GREEN}✅ 数据备份完成${NC}"
-else
-    echo "首次部署，跳过备份"
-fi
-echo ""
-
-# 步骤4: 拉取最新代码
-echo -e "${YELLOW}[4/8] 拉取最新代码...${NC}"
-if [ -d "$DEPLOY_DIR" ]; then
-    echo "更新现有仓库..."
-    cd "$DEPLOY_DIR"
-    git fetch origin
-    git reset --hard origin/$BRANCH
-    git pull origin $BRANCH
-else
-    echo "克隆新仓库..."
-    git clone -b $BRANCH $REPO_URL $DEPLOY_DIR
-    cd "$DEPLOY_DIR"
-fi
-echo -e "${GREEN}✅ 代码拉取成功${NC}"
-echo ""
-
-# 步骤5: 恢复数据库（如果有备份）
-echo -e "${YELLOW}[5/8] 恢复数据库...${NC}"
-LATEST_BACKUP=$(ls -t $HOME/laochen-ai-backup-*.tar.gz 2>/dev/null | head -1)
-if [ -n "$LATEST_BACKUP" ] && [ -f "$LATEST_BACKUP" ]; then
-    echo "发现备份文件: $LATEST_BACKUP"
-    read -p "是否恢复数据库？(y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        mkdir -p "$DEPLOY_DIR/backend"
-        tar -xzf "$LATEST_BACKUP" -C "$DEPLOY_DIR/backend"
-        echo -e "${GREEN}✅ 数据库恢复成功${NC}"
+    print_warning "Docker 未安装，开始安装..."
+    
+    # 更新软件包索引
+    sudo apt-get update
+    
+    # 安装必要的依赖
+    sudo apt-get install -y \
+        ca-certificates \
+        curl \
+        gnupg \
+        lsb-release
+    
+    # 添加 Docker 官方 GPG key（使用国内镜像）
+    print_info "使用国内镜像下载 Docker GPG 密钥..."
+    sudo mkdir -p /etc/apt/keyrings
+    
+    # 尝试多个镜像源下载 GPG key
+    if curl -fsSL https://mirrors.tencent.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg; then
+        print_success "腾讯云镜像 GPG 密钥下载成功"
+        DOCKER_MIRROR="https://mirrors.tencent.com/docker-ce/linux/ubuntu"
+    elif curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg; then
+        print_success "阿里云镜像 GPG 密钥下载成功"
+        DOCKER_MIRROR="https://mirrors.aliyun.com/docker-ce/linux/ubuntu"
+    elif curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg; then
+        print_success "中科大镜像 GPG 密钥下载成功"
+        DOCKER_MIRROR="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu"
     else
-        echo "跳过数据库恢复"
+        print_error "所有镜像源均无法访问，请检查网络连接"
+        exit 1
+    fi
+    
+    # 设置 Docker 仓库（使用国内镜像）
+    print_info "配置 Docker 仓库（国内镜像）..."
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] $DOCKER_MIRROR \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    
+    # 安装 Docker Engine
+    print_info "安装 Docker Engine..."
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    
+    # 配置 Docker 镜像加速器（国内镜像）
+    print_info "配置 Docker 镜像加速器..."
+    sudo mkdir -p /etc/docker
+    sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": [
+    "https://mirror.ccs.tencentyun.com",
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://hub-mirror.c.163.com"
+  ]
+}
+EOF
+    
+    # 重启 Docker 服务
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
+    
+    # 将当前用户添加到 docker 组
+    sudo usermod -aG docker $USER
+    
+    print_success "Docker 安装完成！"
+    print_warning "请注销并重新登录以使 Docker 组权限生效，然后重新运行此脚本。"
+    print_info "提示：退出命令 'exit'，然后重新连接 SSH"
+    exit 0
+else
+    print_success "Docker 已安装"
+fi
+
+# 2. 检查 Git
+print_info "检查 Git 安装状态..."
+if ! command -v git &> /dev/null; then
+    print_warning "Git 未安装，开始安装..."
+    sudo apt-get update
+    sudo apt-get install -y git
+    print_success "Git 安装完成！"
+else
+    print_success "Git 已安装"
+fi
+
+# 2.5 配置 Git（凭据存储 + 大文件传输优化）
+print_info "配置 Git..."
+git config --global credential.helper store
+git config --global http.postBuffer 524288000
+git config --global http.lowSpeedLimit 0
+git config --global http.lowSpeedTime 999999
+print_success "Git 配置完成（已优化大文件传输）"
+
+# 3. 克隆或更新代码仓库
+if [ -d "$PROJECT_DIR" ]; then
+    print_info "项目目录已存在，拉取最新代码..."
+    cd "$PROJECT_DIR"
+    
+    # 检查是否有未保存的更改
+    if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+        print_warning "检测到本地修改，暂存更改..."
+        git stash
+    fi
+    
+    # 尝试拉取最新代码
+    print_info "从远程仓库拉取最新代码..."
+    if git fetch origin && git reset --hard origin/$BRANCH && git pull origin $BRANCH; then
+        print_success "代码更新完成"
+    else
+        print_error "代码更新失败！"
+        echo ""
+        print_warning "可能的原因："
+        echo "  1. GitHub 访问权限问题（需要 Personal Access Token）"
+        echo "  2. 网络连接问题"
+        echo ""
+        print_info "解决方案："
+        echo "  如果是首次部署或权限问题，请按照以下步骤操作："
+        echo ""
+        echo "  步骤1：创建 GitHub Personal Access Token"
+        echo "    1. 访问 https://github.com/settings/tokens"
+        echo "    2. 点击 'Generate new token (classic)'"
+        echo "    3. 勾选 'repo' 权限"
+        echo "    4. 生成并复制 Token"
+        echo ""
+        echo "  步骤2：配置 Git 凭据"
+        echo "    在下次 Git 操作时："
+        echo "    - Username: LCCG-Agent"
+        echo "    - Password: 粘贴您的 Token（不是 GitHub 密码！）"
+        echo ""
+        echo "  步骤3：重新运行此脚本"
+        echo "    ./deploy-server.sh"
+        echo ""
+        exit 1
     fi
 else
-    echo "没有备份文件，跳过恢复"
+    print_info "克隆 GitHub 仓库..."
+    echo ""
+    print_warning "⚠️  重要提示："
+    echo "  GitHub 不再支持使用密码进行身份验证"
+    echo "  您需要使用 Personal Access Token (PAT)"
+    echo ""
+    print_info "准备工作："
+    echo "  1. 确保您已创建 GitHub Personal Access Token"
+    echo "  2. 访问 https://github.com/settings/tokens 创建（如果还没有）"
+    echo "  3. Token 需要 'repo' 权限"
+    echo ""
+    print_info "身份验证说明："
+    echo "  当提示输入用户名和密码时："
+    echo "  - Username for 'https://github.com': LCCG-Agent"
+    echo "  - Password for 'https://LCCG-Agent@github.com': [粘贴您的Token]"
+    echo ""
+    read -p "按 Enter 继续克隆仓库..." dummy
+    
+    if git clone -b $BRANCH $GITHUB_REPO $PROJECT_DIR; then
+        cd "$PROJECT_DIR"
+        print_success "代码克隆完成"
+        print_success "您的凭据已保存，下次将自动使用"
+    else
+        print_error "代码克隆失败！"
+        echo ""
+        print_warning "请检查："
+        echo "  1. Token 是否有效"
+        echo "  2. Token 是否有 'repo' 权限"
+        echo "  3. 网络连接是否正常"
+        echo ""
+        exit 1
+    fi
 fi
-echo ""
 
-# 步骤6: 配置环境变量
-echo -e "${YELLOW}[6/8] 配置环境变量...${NC}"
-cat > "$DEPLOY_DIR/.env" << EOF
+# 4. 创建环境变量文件
+print_info "创建环境变量文件..."
+if [ ! -f "$PROJECT_DIR/.env" ]; then
+    cat > "$PROJECT_DIR/.env" << EOF
 # 数据库配置
 POSTGRES_DB=laochen_ai
 POSTGRES_USER=postgres
@@ -117,70 +226,107 @@ POSTGRES_PASSWORD=postgres123
 
 # 后端配置
 DATABASE_URL=postgresql://postgres:postgres123@db:5432/laochen_ai
-FRONTEND_URL=http://localhost:${PORT}
+FRONTEND_URL=http://101.34.79.228:${FRONTEND_PORT}
 
 # 前端配置
-NEXT_PUBLIC_API_URL=http://localhost:${BACKEND_PORT}
+NEXT_PUBLIC_API_URL=http://101.34.79.228:${BACKEND_PORT}
 EOF
-echo -e "${GREEN}✅ 环境变量配置完成${NC}"
-echo ""
+    print_success "环境变量文件已创建"
+else
+    print_info "环境变量文件已存在，跳过创建"
+fi
 
-# 步骤7: 构建并启动容器
-echo -e "${YELLOW}[7/8] 构建并启动Docker容器...${NC}"
-cd "$DEPLOY_DIR"
-echo "构建镜像（这可能需要几分钟）..."
+# 5. 停止并删除旧容器
+print_info "停止并删除旧容器..."
+cd "$PROJECT_DIR"
+docker compose down --volumes || true
+print_success "旧容器已清理"
+
+# 6. 清理旧镜像（可选，节省空间）
+print_info "清理未使用的 Docker 镜像..."
+docker image prune -f || true
+
+# 7. 构建新镜像
+print_info "构建 Docker 镜像（这可能需要几分钟）..."
 docker compose build --no-cache
+print_success "镜像构建完成"
 
-echo "启动容器..."
+# 8. 启动容器
+print_info "启动容器..."
 docker compose up -d
+print_success "容器已启动"
 
-echo "等待服务启动..."
-sleep 10
-echo -e "${GREEN}✅ 容器启动成功${NC}"
-echo ""
+# 9. 等待服务启动
+print_info "等待服务启动..."
+sleep 15
 
-# 步骤8: 验证部署
-echo -e "${YELLOW}[8/8] 验证部署状态...${NC}"
+# 10. 初始化数据库
+print_info "初始化数据库..."
+docker compose exec -T backend python init_db.py || print_warning "数据库初始化失败，可能已经初始化过"
+
+# 11. 检查服务状态
+print_info "检查服务状态..."
 echo ""
-echo "容器状态:"
+echo "容器运行状态："
 docker compose ps
 echo ""
 
-# 检查后端健康
-echo "检查后端服务..."
-if curl -s http://localhost:${BACKEND_PORT}/api/health > /dev/null; then
-    echo -e "${GREEN}✅ 后端服务正常${NC}"
+# 检查后端服务
+print_info "检查后端服务..."
+sleep 5
+if curl -s http://localhost:${BACKEND_PORT}/docs > /dev/null 2>&1; then
+    print_success "后端服务运行正常！"
 else
-    echo -e "${RED}⚠️ 后端服务未响应${NC}"
+    print_warning "后端服务未响应，查看日志："
+    docker compose logs backend --tail=20
 fi
 
-# 检查前端
-echo "检查前端服务..."
-if curl -s http://localhost:${PORT} > /dev/null; then
-    echo -e "${GREEN}✅ 前端服务正常${NC}"
+# 检查前端服务
+print_info "检查前端服务..."
+if curl -s http://localhost:${FRONTEND_PORT} > /dev/null 2>&1; then
+    print_success "前端服务运行正常！"
 else
-    echo -e "${RED}⚠️ 前端服务未响应${NC}"
+    print_warning "前端服务未响应，查看日志："
+    docker compose logs frontend --tail=20
 fi
-echo ""
 
-# 完成
-echo -e "${GREEN}========================================"
-echo "  ✅ 部署完成！"
-echo "========================================${NC}"
+# 检查数据库
+print_info "检查数据库服务..."
+if docker compose exec -T db pg_isready -U postgres > /dev/null 2>&1; then
+    print_success "数据库服务运行正常！"
+else
+    print_warning "数据库服务未响应"
+fi
+
 echo ""
-echo "访问地址:"
-echo "  前端: http://101.34.79.228:${PORT}"
-echo "  后端API: http://101.34.79.228:${BACKEND_PORT}"
-echo "  API文档: http://101.34.79.228:${BACKEND_PORT}/docs"
+echo "========================================"
+echo "  🎉 部署完成！"
+echo "========================================"
 echo ""
-echo "常用命令:"
-echo "  查看日志: docker compose logs -f"
-echo "  重启服务: docker compose restart"
-echo "  停止服务: docker compose down"
-echo "  查看状态: docker compose ps"
+echo "📌 服务信息："
+echo "   - 前端地址：http://101.34.79.228:${FRONTEND_PORT}"
+echo "   - 后端API：http://101.34.79.228:${BACKEND_PORT}"
+echo "   - API文档：http://101.34.79.228:${BACKEND_PORT}/docs"
+echo "   - 数据库端口：${DB_PORT}"
 echo ""
-echo "⚠️ 注意事项:"
-echo "  1. 确保防火墙已开放端口 ${PORT} 和 ${BACKEND_PORT}"
-echo "  2. 如需配置域名，请修改Nginx配置"
-echo "  3. 数据库备份位于: $HOME/laochen-ai-backup-*.tar.gz"
+echo "📌 常用命令："
+echo "   - 查看所有日志：docker compose logs -f"
+echo "   - 查看后端日志：docker compose logs -f backend"
+echo "   - 查看前端日志：docker compose logs -f frontend"
+echo "   - 重启服务：docker compose restart"
+echo "   - 停止服务：docker compose down"
+echo "   - 查看状态：docker compose ps"
+echo ""
+echo "📌 下一步："
+echo "   1. 在腾讯云控制台开放端口："
+echo "      - ${FRONTEND_PORT} (前端)"
+echo "      - ${BACKEND_PORT} (后端)"
+echo "      - ${DB_PORT} (数据库，可选)"
+echo "   2. 访问前端测试：http://101.34.79.228:${FRONTEND_PORT}"
+echo "   3. 如遇问题，查看日志：docker compose logs -f"
+echo ""
+print_warning "⚠️ 重要提示："
+echo "   - 确保防火墙已开放相应端口"
+echo "   - 首次访问可能需要几秒钟启动时间"
+echo "   - 如需配置域名和HTTPS，请配置Nginx反向代理"
 echo ""
