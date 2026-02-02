@@ -105,25 +105,25 @@ export default function DaoPage() {
     },
   ];
 
-  // 推荐路线
+  // 推荐路线 - 移除下载导向，聚焦知识学习
   const learningPaths = [
     {
-      duration: "7天",
-      title: "快速入门",
-      description: "了解体系框架，上手第一个模板",
-      steps: ["阅读体系全景图", "下载并运行一个模板", "完成第一次自动化分析"],
+      duration: "第一步",
+      title: "理解框架",
+      description: "建立数据分析自动化的整体认知",
+      steps: ["阅读体系全景图", "理解6大核心模块", "思考自己的应用场景"],
     },
     {
-      duration: "14天",
-      title: "系统学习",
-      description: "掌握标准化规范，构建工具箱",
-      steps: ["建立数据口径规范", "配置3个常用模板", "搭建个人指令库"],
+      duration: "第二步",
+      title: "掌握规范",
+      description: "学习标准化的方法论",
+      steps: ["建立数据口径规范", "了解命名与版本管理", "熟悉质量检查流程"],
     },
     {
-      duration: "30天",
-      title: "深度实践",
-      description: "完成端到端自动化，沉淀最佳实践",
-      steps: ["实现完整的周报自动化", "建立质量检查流程", "沉淀可复用的资产库"],
+      duration: "第三步",
+      title: "实践应用",
+      description: "将方法论落地到实际工作中",
+      steps: ["从一个简单场景开始", "逐步优化工作流程", "沉淀可复用的经验"],
     },
   ];
 
@@ -207,14 +207,14 @@ export default function DaoPage() {
               <Link 
                 key={index} 
                 href={`/dao/${index + 1}`}
-                className="card flex items-start gap-6 hover:border-[var(--border-hover)] cursor-pointer group"
+                className="card flex items-start gap-4 md:gap-6 p-5 md:p-8 hover:border-[var(--border-hover)] cursor-pointer group min-h-[120px]"
               >
-                <div className="shrink-0 w-12 h-12 rounded-xl bg-[rgba(59,130,246,0.15)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-6 h-6 text-[var(--accent-blue)]" />
+                <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[rgba(59,130,246,0.15)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <BookOpen className="w-6 h-6 md:w-7 md:h-7 text-[var(--accent-blue)]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold group-hover:text-[var(--primary-400)] transition-colors">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
+                    <h3 className="text-base md:text-lg font-semibold group-hover:text-[var(--primary-400)] transition-colors">
                       {article.title}
                     </h3>
                     {article.isNew && (
@@ -223,12 +223,12 @@ export default function DaoPage() {
                       </span>
                     )}
                   </div>
-                  <p className="text-[var(--text-tertiary)] mb-3 line-clamp-2">
+                  <p className="text-sm md:text-base text-[var(--text-tertiary)] mb-3 line-clamp-2">
                     {article.description}
                   </p>
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-4">
                     {article.tags.map((tag) => (
-                      <span key={tag} className="tag">{tag}</span>
+                      <span key={tag} className="tag text-xs">{tag}</span>
                     ))}
                     <span className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
                       <Clock className="w-3 h-3" />
@@ -236,7 +236,7 @@ export default function DaoPage() {
                     </span>
                   </div>
                 </div>
-                <div className="shrink-0 self-center">
+                <div className="shrink-0 self-center hidden md:block">
                   <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
@@ -279,23 +279,31 @@ export default function DaoPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* 相关阅读 - 替代原来的下载CTA */}
       <section className="section">
         <div className="container">
-          <div className="card text-center py-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              准备好开始了吗？
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold mb-6 text-[var(--text-secondary)]">
+              继续探索
             </h2>
-            <p className="text-[var(--text-tertiary)] mb-8 max-w-xl mx-auto">
-              从下载第一个模板开始，体验数据分析自动化的魅力
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/qi" className="btn btn-primary">
-                <span>下载模板</span>
-                <ArrowRight className="w-5 h-5" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link 
+                href="/fa" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">法：规则标准</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  了解数据分析的口径定义与流程规范
+                </p>
               </Link>
-              <Link href="/shu" className="btn btn-secondary">
-                <span>查看工具清单</span>
+              <Link 
+                href="/shu" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">术：技术方法</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  探索 Skills、MCP、Agent 的实践方法
+                </p>
               </Link>
             </div>
           </div>

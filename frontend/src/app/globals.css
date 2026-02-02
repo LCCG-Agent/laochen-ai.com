@@ -121,19 +121,28 @@
 
 @layer components {
   /* ============================================
-     导航栏
+     导航栏 - 移动端优化点击区域
      ============================================ */
   .nav-link {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
-    font-size: 14px;
+    padding: 10px 16px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--text-secondary);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     cursor: pointer;
+    min-height: 44px; /* 移动端最小点击区域 */
+  }
+
+  @media (max-width: 768px) {
+    .nav-link {
+      padding: 14px 18px;
+      font-size: 16px;
+      min-height: 52px;
+    }
   }
 
   .nav-link:hover {
@@ -147,21 +156,31 @@
   }
 
   /* ============================================
-     按钮系统
+     按钮系统 - 移动端优化点击区域
      ============================================ */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 24px;
-    font-size: 14px;
+    padding: 14px 28px;
+    font-size: 15px;
     font-weight: 600;
     border-radius: var(--radius-lg);
     transition: all var(--transition-fast);
     cursor: pointer;
     border: none;
     outline: none;
+    min-height: 48px; /* 移动端最小点击区域 */
+  }
+
+  @media (max-width: 768px) {
+    .btn {
+      padding: 16px 24px;
+      font-size: 16px;
+      min-height: 52px; /* 移动端更大的点击区域 */
+      width: 100%; /* 移动端按钮默认全宽 */
+    }
   }
 
   .btn-primary {
@@ -175,6 +194,10 @@
     box-shadow: var(--shadow-md);
   }
 
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
   .btn-secondary {
     background: var(--bg-primary);
     color: var(--text-primary);
@@ -184,6 +207,10 @@
   .btn-secondary:hover {
     background: var(--bg-tertiary);
     border-color: var(--border-hover);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.98);
   }
 
   .btn-ghost {
@@ -197,14 +224,20 @@
   }
 
   /* ============================================
-     卡片系统 - Raycast/Vercel 风格
+     卡片系统 - Raycast/Vercel 风格 + 移动端优化
      ============================================ */
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border-primary);
     border-radius: var(--radius-lg);
-    padding: 32px;
+    padding: 24px;
     transition: all var(--transition-base);
+  }
+
+  @media (min-width: 768px) {
+    .card {
+      padding: 32px;
+    }
   }
 
   .card:hover {
@@ -219,6 +252,11 @@
   .card-interactive:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
+  }
+
+  /* 移动端点击反馈 */
+  .card-interactive:active {
+    transform: scale(0.99);
   }
 
   /* 特色卡片 - Linear风格 */

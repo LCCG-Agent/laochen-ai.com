@@ -1,339 +1,299 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
-  Search,
-  Download,
-  Clock,
-  FileSpreadsheet,
-  BarChart3,
+  MessageSquare,
+  Wrench,
+  Shield,
+  Zap,
   Table,
+  BarChart3,
   FileText,
   CheckSquare,
-  Wrench,
-  ArrowRight,
-  RefreshCw
+  Sparkles,
+  Settings,
+  ArrowRight
 } from "lucide-react";
 
 /**
- * 器页面 - 模板库
- * 参考：Vercel Templates / Notion Templates 风格
+ * 器页面 - Office Agent 介绍
+ * 定位：产品能力介绍，而非下载导向
  */
 export default function QiPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("all");
-
-  // 分类
-  const categories = [
-    { id: "all", label: "全部", count: 6 },
-    { id: "chart", label: "出图类", count: 1 },
-    { id: "clean", label: "清洗类", count: 1 },
-    { id: "summary", label: "汇总类", count: 1 },
-    { id: "report", label: "周报/月报", count: 1 },
-    { id: "check", label: "对账校验", count: 1 },
-    { id: "macro", label: "宏工具箱", count: 1 },
-  ];
-
-  // 模板数据
-  const templates = [
+  // Office Agent 核心特性
+  const coreFeatures = [
     {
-      slug: "weekly-report",
-      category: "report",
-      title: "一键周报模板",
-      description: "自动汇总周数据，生成标准周报，包含环比分析和下周建议",
-      scenario: "每周一早上快速出周报",
-      estimatedTime: "2分钟",
-      output: "完整周报文档",
-      updatedAt: "2026-01-28",
-      downloads: 1280,
-      icon: FileText,
-      color: "var(--accent-blue)",
-      bgColor: "rgba(59,130,246,0.15)",
-      isPopular: true,
+      icon: MessageSquare,
+      title: "侧边栏对话",
+      description: "在 Excel 中打开侧边栏，用自然语言描述需求，AI 理解并执行",
     },
     {
-      slug: "data-clean",
-      category: "clean",
-      title: "数据清洗模板",
-      description: "一键去重、格式统一、空值处理、异常值标记",
-      scenario: "收到杂乱数据需要整理时",
-      estimatedTime: "1分钟",
-      output: "清洗后的标准表格",
-      updatedAt: "2026-01-25",
-      downloads: 956,
       icon: Table,
+      title: "选区即上下文",
+      description: "选中任意区域，AI 自动理解表格结构、字段含义、数据特征",
+    },
+    {
+      icon: Wrench,
+      title: "30+ 标准化工具",
+      description: "数据清洗、格式转换、公式生成、图表绘制等常用操作一键完成",
+    },
+    {
+      icon: Shield,
+      title: "本地化部署",
+      description: "数据不离开本地，隐私安全可控，适合企业敏感数据场景",
+    },
+  ];
+
+  // 工具分类展示
+  const toolCategories = [
+    {
+      category: "数据清洗",
+      icon: Sparkles,
       color: "var(--accent-emerald)",
       bgColor: "rgba(16,185,129,0.15)",
-      isPopular: true,
+      tools: ["去重", "格式统一", "空值处理", "异常值标记", "类型转换"],
     },
     {
-      slug: "topn-chart",
-      category: "chart",
-      title: "TopN 出图模板",
-      description: "自动识别数据字段，一键生成 Top10/Top20 排行榜图表",
-      scenario: "需要快速出排行榜图表",
-      estimatedTime: "30秒",
-      output: "柱状图 + 数据表",
-      updatedAt: "2026-01-30",
-      downloads: 734,
+      category: "数据分析",
       icon: BarChart3,
-      color: "var(--accent-amber)",
-      bgColor: "rgba(245,158,11,0.15)",
-      isPopular: false,
+      color: "var(--accent-blue)",
+      bgColor: "rgba(59,130,246,0.15)",
+      tools: ["透视表生成", "同比环比计算", "趋势分析", "排名统计", "分组汇总"],
     },
     {
-      slug: "monthly-trend",
-      category: "summary",
-      title: "月份汇总 + 趋势分析模板",
-      description: "按月份自动汇总，生成趋势图，计算同比环比",
-      scenario: "月度数据分析和汇报",
-      estimatedTime: "2分钟",
-      output: "趋势图 + 分析结论",
-      updatedAt: "2026-01-22",
-      downloads: 867,
-      icon: FileSpreadsheet,
+      category: "可视化",
+      icon: FileText,
       color: "var(--accent-purple)",
       bgColor: "rgba(139,92,246,0.15)",
-      isPopular: false,
+      tools: ["柱状图", "折线图", "饼图", "散点图", "组合图表"],
     },
     {
-      slug: "reconciliation",
-      category: "check",
-      title: "对账校验模板",
-      description: "两表自动对账，差异高亮显示，生成对账报告",
-      scenario: "财务对账、数据核对",
-      estimatedTime: "1分钟",
-      output: "对账报告 + 差异明细",
-      updatedAt: "2026-01-20",
-      downloads: 623,
+      category: "质量检查",
       icon: CheckSquare,
-      color: "var(--accent-rose)",
-      bgColor: "rgba(244,63,94,0.15)",
-      isPopular: false,
-    },
-    {
-      slug: "macro-toolbox",
-      category: "macro",
-      title: "宏工具箱",
-      description: "常用一键操作合集：批量重命名、格式统一、快速筛选等",
-      scenario: "日常高频操作提效",
-      estimatedTime: "即时",
-      output: "20+ 常用宏",
-      updatedAt: "2026-01-18",
-      downloads: 1456,
-      icon: Wrench,
-      color: "var(--accent-cyan)",
-      bgColor: "rgba(6,182,212,0.15)",
-      isPopular: true,
+      color: "var(--accent-amber)",
+      bgColor: "rgba(245,158,11,0.15)",
+      tools: ["数据校验", "对账核对", "完整性检查", "一致性检查", "差异高亮"],
     },
   ];
 
-  // 过滤模板
-  const filteredTemplates = templates.filter((template) => {
-    const matchesCategory = activeCategory === "all" || template.category === activeCategory;
-    const matchesSearch = template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      template.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  // 使用场景示例
+  const useCases = [
+    {
+      scenario: "周报制作",
+      before: "手动汇总数据、做图、写结论，耗时 2 小时",
+      after: "选中数据区域，说「生成本周销售周报」，2 分钟完成",
+    },
+    {
+      scenario: "数据清洗",
+      before: "逐列检查格式、去重、处理空值，反复操作",
+      after: "选中数据，说「清洗这份数据」，一键完成所有处理",
+    },
+    {
+      scenario: "对账核对",
+      before: "两张表逐行比对，标记差异，容易遗漏",
+      after: "选中两个区域，说「对账并标记差异」，差异自动高亮",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       <Header />
 
       {/* Hero */}
-      <section className="pt-32 pb-8">
+      <section className="pt-32 pb-16">
         <div className="container">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
-              <span className="tag tag-amber">模板</span>
+              <span className="tag tag-amber">工具</span>
               <span className="text-[var(--text-muted)]">/</span>
               <span className="text-[var(--text-tertiary)]">器</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              数分之器
+              Office Agent
             </h1>
             <p className="text-xl text-[var(--text-secondary)] leading-relaxed">
-              Office Agent 模板下载：装上就能用。<br />
-              选择你需要的模板，一键下载，立即开始。
+              Excel 本地 AI 插件，让数据分析回归简单。<br />
+              选中数据，说出需求，剩下的交给 AI。
             </p>
           </div>
         </div>
       </section>
 
-      {/* 搜索和筛选 */}
-      <section className="py-8 sticky top-16 z-40 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-b border-[var(--border-primary)]">
-        <div className="container">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* 搜索框 */}
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-              <input
-                type="text"
-                placeholder="搜索模板..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="input pl-12"
-              />
-            </div>
-            
-            {/* 分类筛选 */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                    activeCategory === cat.id
-                      ? "bg-[var(--primary-600)] text-white"
-                      : "bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 模板卡片网格 */}
-      <section className="section">
-        <div className="container">
-          {filteredTemplates.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTemplates.map((template) => (
-                <Link
-                  key={template.slug}
-                  href={`/qi/templates/${template.slug}`}
-                  className="card card-interactive group"
-                >
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div 
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
-                      style={{ background: template.bgColor }}
-                    >
-                      <template.icon className="w-7 h-7" style={{ color: template.color }} />
-                    </div>
-                    {template.isPopular && (
-                      <span className="px-2 py-0.5 text-xs font-medium bg-[var(--accent-amber)] text-[var(--bg-primary)] rounded">
-                        热门
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-[var(--primary-400)] transition-colors">
-                    {template.title}
-                  </h3>
-                  <p className="text-sm text-[var(--text-tertiary)] mb-4 line-clamp-2">
-                    {template.description}
-                  </p>
-
-                  {/* Meta */}
-                  <div className="space-y-2 mb-4 text-sm">
-                    <div className="flex items-center justify-between text-[var(--text-muted)]">
-                      <span>适用场景</span>
-                      <span className="text-[var(--text-secondary)]">{template.scenario}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[var(--text-muted)]">
-                      <span>预计耗时</span>
-                      <span className="text-[var(--text-secondary)]">{template.estimatedTime}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[var(--text-muted)]">
-                      <span>输出物</span>
-                      <span className="text-[var(--text-secondary)]">{template.output}</span>
-                    </div>
-                  </div>
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-[var(--border-secondary)]">
-                    <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
-                      <span className="flex items-center gap-1">
-                        <RefreshCw className="w-3 h-3" />
-                        {template.updatedAt}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Download className="w-3 h-3" />
-                        {template.downloads}
-                      </span>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--primary-400)] group-hover:translate-x-1 transition-all" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20">
-              <Search className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">没有找到匹配的模板</h3>
-              <p className="text-[var(--text-tertiary)]">
-                尝试其他关键词或清除筛选条件
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 如何使用 */}
+      {/* 核心特性 */}
       <section className="section bg-[var(--bg-secondary)]">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">如何使用模板</h2>
-            <p className="text-[var(--text-tertiary)]">3步上手，立即开始自动化分析</p>
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">核心特性</h2>
+            <p className="text-[var(--text-tertiary)]">
+              专为数据分析场景设计的 Excel AI 插件
+            </p>
           </div>
 
-          <div className="grid-3">
-            <div className="card text-center">
-              <div className="w-16 h-16 rounded-2xl bg-[rgba(59,130,246,0.15)] flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-[var(--accent-blue)]">1</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {coreFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="card p-6 md:p-8 min-h-[140px]"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
+                    <feature.icon className="w-6 h-6 md:w-7 md:h-7 text-[var(--color-accent)]" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg md:text-xl font-bold mb-2">{feature.title}</h3>
+                    <p className="text-sm md:text-base text-[var(--text-tertiary)]">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold mb-2">下载模板</h3>
-              <p className="text-sm text-[var(--text-tertiary)]">
-                选择需要的模板，点击下载按钮获取文件
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 工具能力 */}
+      <section className="section">
+        <div className="container">
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">工具能力</h2>
+            <p className="text-[var(--text-tertiary)]">
+              30+ 标准化工具，覆盖数据分析全流程
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {toolCategories.map((cat, index) => (
+              <div key={index} className="card p-6 md:p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div 
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: cat.bgColor }}
+                  >
+                    <cat.icon className="w-6 h-6" style={{ color: cat.color }} />
+                  </div>
+                  <h3 className="text-lg md:text-xl font-bold">{cat.category}</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {cat.tools.map((tool, toolIndex) => (
+                    <span 
+                      key={toolIndex} 
+                      className="px-3 py-1.5 text-sm bg-[var(--bg-tertiary)] text-[var(--text-secondary)] rounded-lg"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 使用场景 */}
+      <section className="section bg-[var(--bg-secondary)]">
+        <div className="container">
+          <div className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">使用场景</h2>
+            <p className="text-[var(--text-tertiary)]">
+              看看 Office Agent 如何改变日常工作
+            </p>
+          </div>
+
+          <div className="space-y-4 max-w-4xl">
+            {useCases.map((useCase, index) => (
+              <div key={index} className="card p-6 md:p-8">
+                <h3 className="text-lg md:text-xl font-bold mb-4" style={{ color: "var(--color-accent)" }}>
+                  {useCase.scenario}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-[var(--bg-tertiary)]">
+                    <p className="text-xs text-[var(--text-muted)] mb-2">以前</p>
+                    <p className="text-sm text-[var(--text-secondary)]">{useCase.before}</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[var(--color-accent-light)]">
+                    <p className="text-xs text-[var(--color-accent)] mb-2">现在</p>
+                    <p className="text-sm text-[var(--text-primary)]">{useCase.after}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 技术架构说明 */}
+      <section className="section">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">技术说明</h2>
+              <p className="text-[var(--text-tertiary)]">
+                基于 VSTO 框架开发，深度集成 Excel
               </p>
             </div>
 
-            <div className="card text-center">
-              <div className="w-16 h-16 rounded-2xl bg-[rgba(16,185,129,0.15)] flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-[var(--accent-emerald)]">2</span>
+            <div className="card p-6 md:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <Settings className="w-5 h-5 text-[var(--color-accent)]" />
+                    技术栈
+                  </h4>
+                  <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
+                    <li>• VSTO (Visual Studio Tools for Office)</li>
+                    <li>• C# / .NET Framework</li>
+                    <li>• Excel Interop API</li>
+                    <li>• 本地 LLM API 调用</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-[var(--color-accent)]" />
+                    特点
+                  </h4>
+                  <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
+                    <li>• 本地部署，数据不上传</li>
+                    <li>• 支持 Excel 2016 及以上版本</li>
+                    <li>• 对话 + 工具双模式</li>
+                    <li>• 可扩展的工具架构</li>
+                  </ul>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold mb-2">导入 Office Agent</h3>
-              <p className="text-sm text-[var(--text-tertiary)]">
-                打开 Office Agent，导入下载的模板文件
-              </p>
-            </div>
-
-            <div className="card text-center">
-              <div className="w-16 h-16 rounded-2xl bg-[rgba(245,158,11,0.15)] flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold text-[var(--accent-amber)]">3</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">输入指令执行</h3>
-              <p className="text-sm text-[var(--text-tertiary)]">
-                按照模板示例输入指令，自动完成分析
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA - 下载 Office Agent */}
-      <section className="section">
+      {/* 相关阅读 */}
+      <section className="section bg-[var(--bg-secondary)]">
         <div className="container">
-          <div className="card text-center py-12 bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-tertiary)]">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              还没有 Office Agent？
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold mb-6 text-[var(--text-secondary)]">
+              继续探索
             </h2>
-            <p className="text-[var(--text-tertiary)] mb-8 max-w-xl mx-auto">
-              Office Agent 是模板运行的基础环境，免费下载安装即可使用
-            </p>
-            <button className="btn btn-cta">
-              <Download className="w-5 h-5" />
-              <span>下载 Office Agent</span>
-            </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link 
+                href="/shu" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">术：技术方法</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  了解 Skills、MCP、Agent 的实践方法
+                </p>
+              </Link>
+              <Link 
+                href="/dao" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">道：体系框架</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  回顾数据分析自动化的整体思维框架
+                </p>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

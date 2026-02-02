@@ -198,11 +198,11 @@ export default function FaPage() {
               <Link 
                 key={index} 
                 href={`/fa/${index + 1}`}
-                className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-primary)] hover:border-[var(--color-accent)] hover:bg-[var(--bg-secondary)] transition-all group"
+                className="flex items-center justify-between p-5 md:p-6 rounded-xl border border-[var(--border-primary)] hover:border-[var(--color-accent)] hover:bg-[var(--bg-secondary)] transition-all group min-h-[100px]"
               >
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <h4 className="font-medium group-hover:text-[var(--color-accent)] transition-colors">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
+                    <h4 className="font-medium text-base group-hover:text-[var(--color-accent)] transition-colors">
                       {article.title}
                     </h4>
                     {article.isNew && (
@@ -211,10 +211,10 @@ export default function FaPage() {
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-[var(--text-tertiary)] mb-2">
+                  <p className="text-sm text-[var(--text-tertiary)] mb-3">
                     {article.description}
                   </p>
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-4">
                     {article.tags.map((tag) => (
                       <span key={tag} className="tag text-xs">{tag}</span>
                     ))}
@@ -224,30 +224,38 @@ export default function FaPage() {
                     </span>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all ml-4" />
+                <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all ml-4 hidden md:block" />
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* 相关阅读 - 替代原来的跳转CTA */}
       <section className="section bg-[var(--bg-secondary)]">
         <div className="container">
-          <div className="card text-center py-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              下一步：掌握技术手段
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold mb-6 text-[var(--text-secondary)]">
+              继续探索
             </h2>
-            <p className="text-[var(--text-tertiary)] mb-8 max-w-xl mx-auto">
-              有了"法"的规范，接下来学习"术"的技术实现
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/shu" className="btn btn-primary">
-                <span>探索技术方法</span>
-                <ArrowRight className="w-5 h-5" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link 
+                href="/dao" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">道：体系框架</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  回顾数据分析自动化的整体思维框架
+                </p>
               </Link>
-              <Link href="/dao" className="btn btn-secondary">
-                <span>回到体系框架</span>
+              <Link 
+                href="/shu" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">术：技术方法</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  探索 Skills、MCP、Agent 的实践方法
+                </p>
               </Link>
             </div>
           </div>

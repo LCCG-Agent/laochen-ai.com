@@ -258,15 +258,15 @@ export default function ShuPage() {
               />
             </div>
             
-            {/* 分类筛选 */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+            {/* 分类筛选 - 移动端优化点击区域 */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                  className={`shrink-0 px-5 py-3 md:px-4 md:py-2 rounded-lg text-sm font-medium transition-all cursor-pointer min-h-[44px] ${
                     activeCategory === cat.id
-                      ? "bg-[var(--primary-600)] text-white"
+                      ? "bg-[var(--color-accent)] text-white"
                       : "bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)]"
                   }`}
                 >
@@ -403,20 +403,33 @@ export default function ShuPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* 相关阅读 - 替代原来的下载CTA */}
       <section className="section">
         <div className="container">
-          <div className="card text-center py-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              工具只是手段，模板才是捷径
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold mb-6 text-[var(--text-secondary)]">
+              继续探索
             </h2>
-            <p className="text-[var(--text-tertiary)] mb-8 max-w-xl mx-auto">
-              直接下载配置好的模板，开箱即用
-            </p>
-            <Link href="/qi" className="btn btn-cta">
-              <span>去下载模板</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Link 
+                href="/fa" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">法：规则标准</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  了解数据分析的口径定义与流程规范
+                </p>
+              </Link>
+              <Link 
+                href="/qi" 
+                className="card card-interactive p-6 min-h-[100px]"
+              >
+                <h3 className="font-semibold mb-2">器：Office Agent</h3>
+                <p className="text-sm text-[var(--text-tertiary)]">
+                  了解 Excel 本地 AI 插件的核心能力
+                </p>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

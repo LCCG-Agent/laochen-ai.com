@@ -72,30 +72,30 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - 增大点击区域 */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-[var(--bg-tertiary)] transition-colors"
+            className="md:hidden p-3 -mr-2 rounded-lg hover:bg-[var(--bg-tertiary)] transition-colors min-w-[48px] min-h-[48px] flex items-center justify-center"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
-              <X className="w-5 h-5 text-[var(--text-primary)]" />
+              <X className="w-6 h-6 text-[var(--text-primary)]" />
             ) : (
-              <Menu className="w-5 h-5 text-[var(--text-primary)]" />
+              <Menu className="w-6 h-6 text-[var(--text-primary)]" />
             )}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - 优化点击区域 */}
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-[var(--border-primary)]">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-5 py-4 rounded-lg text-base font-medium transition-colors min-h-[52px] flex items-center ${
                     isActive(item.href)
                       ? "bg-[var(--bg-tertiary)] text-[var(--color-accent)]"
                       : "text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)]"
