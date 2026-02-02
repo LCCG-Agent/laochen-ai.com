@@ -1,256 +1,274 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Sparkles, TrendingUp, Shield, Zap, Newspaper, Search, GitCompare, Target, Wrench, Sun, Moon } from "lucide-react";
-import { useTheme } from "@/components/ThemeProvider";
+import { useEffect, useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { 
+  ArrowRight, 
+  Compass, 
+  Wrench, 
+  BookOpen,
+  Puzzle,
+  ChevronRight
+} from "lucide-react";
 
-export default function Home() {
-  const { theme, toggleTheme } = useTheme();
+/**
+ * 首页 - 老陈AI工坊
+ * 设计风格：Linear + Vercel - 克制、专业、极简
+ * 定位：知识分享型网站
+ */
+export default function HomePage() {
+  // 打字机效果 - 循环播放（打完后清空重新打）
+  const [displayedText, setDisplayedText] = useState("");
+  const fullText = "一句话，我帮你";
   
-  const features = [
-    { icon: Sparkles, text: "AI 驱动洞察" },
-    { icon: TrendingUp, text: "实时趋势追踪" },
-    { icon: Shield, text: "专业数据验证" },
-    { icon: Zap, text: "决策效率提升" },
-  ];
-
-  const modules = [
-    { 
-      title: "资讯捕捉", 
-      desc: "AI工具应用案例与行业资讯", 
-      href: "/cases",
-      icon: Newspaper,
-      color: "var(--accent-blue)"
-    },
-    { 
-      title: "调研洞察", 
-      desc: "市场分析框架与趋势研判", 
-      href: "/research",
-      icon: Search,
-      color: "var(--accent-emerald)"
-    },
-    { 
-      title: "沙盘推演", 
-      desc: "最佳实践路径对比分析", 
-      href: "/strategy",
-      icon: GitCompare,
-      color: "var(--accent-amber)"
-    },
-    { 
-      title: "竞品雷达", 
-      desc: "关键产品动态追踪分析", 
-      href: "/competitor",
-      icon: Target,
-      color: "var(--accent-rose)"
-    },
-    { 
-      title: "工具资源", 
-      desc: "提示词模板与代码工具", 
-      href: "/resources",
-      icon: Wrench,
-      color: "var(--accent-purple)"
-    }
-  ];
+  useEffect(() => {
+    let currentIndex = displayedText.length;
+    
+    const timeout = setTimeout(() => {
+      if (currentIndex < fullText.length) {
+        // 打字阶段
+        setDisplayedText(fullText.slice(0, currentIndex + 1));
+      } else {
+        // 打完后暂停3秒，然后清空重新开始
+        setTimeout(() => {
+          setDisplayedText("");
+        }, 3000);
+      }
+    }, 150); // 打字速度150ms
+    
+    return () => clearTimeout(timeout);
+  }, [displayedText]);
 
   return (
-    <div 
-      className="relative min-h-screen"
-      style={{ background: 'var(--bg-primary)' }}
-    >
-      {/* 背景装饰 */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="bg-glow" />
-        <div className="absolute inset-0 bg-grid opacity-40" />
-      </div>
-
-      {/* 导航栏 */}
-      <header className="relative z-50 fixed top-0 left-0 right-0 backdrop-blur-md bg-[var(--bg-primary)]/80 border-b border-[var(--border-secondary)]">
-        <div className="mx-auto px-6 lg:px-12 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden">
-                <Image src="/logo.jpg" alt="老陈AI工坊" fill className="object-cover" />
-              </div>
-              <span className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>
-                老陈AI工坊
-              </span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-8">
-              <Link 
-                href="/about" 
-                className="text-sm font-medium"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                关于老陈
-              </Link>
-              <button
-                onClick={toggleTheme}
-                className="p-2.5 rounded-xl"
-                style={{ 
-                  background: 'var(--bg-tertiary)',
-                  color: 'var(--text-secondary)',
-                  border: '1px solid var(--border-primary)'
-                }}
-              >
-                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero 内容 */}
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pt-20">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* 主标题 */}
-          <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight"
-            style={{ color: 'var(--text-primary)', lineHeight: 1.1 }}
-          >
-            AI 洞察
-            <br />
-            <span style={{ color: 'var(--primary-400)' }}>
-              智赢未来
-            </span>
-          </h1>
-
-          {/* 副标题 */}
-          <p 
-            className="text-lg md:text-xl max-w-2xl mx-auto mb-14 leading-relaxed"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            实时捕捉行业资讯，洞察市场趋势，推演实践路径
-            <br className="hidden md:block" />
-            追踪竞品动态，汇聚专业工具资源
-          </p>
-
-          {/* CTA 按钮 */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
-            <Link
-              href="/dashboard"
-              className="group inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-semibold text-lg transition-all hover:scale-105"
-              style={{ 
-                background: 'var(--primary-600)',
-                color: 'white'
-              }}
-            >
-              <span>开始探索之旅</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-
-          {/* 特性标签 */}
-          <div className="flex flex-wrap items-center justify-center gap-8">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="flex items-center gap-2 text-sm font-medium"
-                style={{ color: 'var(--text-tertiary)' }}
-              >
-                <feature.icon className="w-4 h-4" style={{ color: 'var(--primary-400)' }} />
-                <span>{feature.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 底部滚动提示 */}
-        <div 
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          style={{ color: 'var(--text-muted)' }}
-        >
-          <span className="text-xs uppercase tracking-widest font-medium">Scroll</span>
-          <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, var(--text-muted), transparent)' }} />
-        </div>
-      </main>
-
-      {/* 功能板块预览 */}
-      <section className="relative z-10 py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              五大核心板块
-            </h2>
-            <p 
-              className="text-lg max-w-xl mx-auto"
-              style={{ color: 'var(--text-tertiary)' }}
-            >
-              全方位洞察数据分析领域，助力决策
+    <div className="min-h-screen bg-[var(--bg-primary)]">
+      <Header />
+      
+      {/* Hero Section - 极简版 */}
+      <section className="relative pt-32 pb-20">
+        <div className="container">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* 主标题 - 打字机效果 */}
+            <h1 className="text-6xl md:text-7xl font-bold mb-6 tracking-tight">
+              <span className="text-gradient">{displayedText}</span>
+              <span className="text-[var(--color-gray-400)]">|</span>
+            </h1>
+            
+            {/* 副标题 */}
+            <p className="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto">
+              数据分析就是这么简单
             </p>
-          </div>
-          
-          {/* 5卡片网格布局 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {modules.map((module, index) => (
-              <Link
-                key={index}
-                href={module.href}
-                className="group p-6 rounded-xl border transition-all duration-300 hover:-translate-y-1"
-                style={{ 
-                  background: 'var(--bg-card)',
-                  borderColor: 'var(--border-primary)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = module.color;
-                  e.currentTarget.style.boxShadow = `0 8px 30px -10px ${module.color}30`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--border-primary)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                {/* 图标 */}
-                <div 
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                  style={{ 
-                    background: `${module.color}15`,
-                    color: module.color
-                  }}
-                >
-                  <module.icon className="w-6 h-6" />
-                </div>
-                
-                <h3 
-                  className="text-xl font-bold mb-2"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  {module.title}
-                </h3>
-                <p 
-                  className="text-sm mb-4"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
-                  {module.desc}
-                </p>
-                
-                <div className="flex items-center gap-1 text-sm font-medium" style={{ color: module.color }}>
-                  <span>了解更多</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
+
+            {/* CTA 按钮组 */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+              <Link href="/dao" className="btn btn-primary text-base px-8 py-4">
+                <span>探索体系框架</span>
+                <ArrowRight className="w-5 h-5" />
               </Link>
-            ))}
+              <Link href="/qi" className="btn btn-secondary text-base px-8 py-4">
+                <Puzzle className="w-5 h-5" />
+                <span>探索 Office Agent</span>
+              </Link>
+            </div>
+
+            {/* 示例展示 - 更克制 */}
+            <div className="max-w-2xl mx-auto">
+              <div className="card bg-[var(--bg-secondary)] border border-[var(--border-primary)] p-6 text-left">
+                <p className="text-sm text-[var(--text-tertiary)] mb-2">比如在 Excel 中：</p>
+                <p className="text-base text-[var(--text-primary)] mb-3">
+                  "按月份汇总销售额，生成折线图"
+                </p>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Office Agent 插件帮你一步完成
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 底部信息 */}
-      <footer className="relative z-10 py-16 px-6 border-t" style={{ borderColor: 'var(--border-primary)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm" style={{ color: 'var(--text-muted)' }}>
-            <div className="flex items-center gap-3">
-              <div className="relative w-8 h-8 rounded-lg overflow-hidden">
-                <Image src="/logo.jpg" alt="老陈AI工坊" fill className="object-cover" />
+      {/* 道法术器 - 四宫格布局 */}
+      <section className="section bg-[var(--bg-secondary)]">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              道法术器
+            </h2>
+            <p className="text-lg text-[var(--text-tertiary)] max-w-2xl mx-auto">
+              系统化知识体系，从理念到工具的完整路径
+            </p>
+          </div>
+
+          {/* 2x2 网格布局 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {/* 道 */}
+            <Link href="/dao" className="card card-interactive card-featured group">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
+                  <Compass className="w-6 h-6 text-[var(--color-accent)]" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-xl font-bold">道</h3>
+                    <span className="text-xs text-[var(--text-tertiary)]">Philosophy</span>
+                  </div>
+                  <p className="text-sm text-[var(--text-tertiary)]">体系框架</p>
+                </div>
               </div>
-              <span>© 2026 老陈AI工坊. All rights reserved.</span>
-            </div>
-            <p className="font-medium">聚焦数据分析 · AI赋能决策</p>
+              <p className="text-[var(--text-secondary)] mb-4">
+                数据科学思维、商业理解、价值观体系
+              </p>
+              <div className="flex items-center gap-2 text-sm text-[var(--color-accent)] font-medium">
+                <span>了解更多</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+            {/* 法 */}
+            <Link href="/fa" className="card card-interactive card-featured group">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
+                  <BookOpen className="w-6 h-6 text-[var(--color-accent)]" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-xl font-bold">法</h3>
+                    <span className="text-xs text-[var(--text-tertiary)]">Standards</span>
+                  </div>
+                  <p className="text-sm text-[var(--text-tertiary)]">规则标准</p>
+                </div>
+              </div>
+              <p className="text-[var(--text-secondary)] mb-4">
+                口径定义、命名规范、SOP流程
+              </p>
+              <div className="flex items-center gap-2 text-sm text-[var(--color-accent)] font-medium">
+                <span>了解更多</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+            {/* 术 */}
+            <Link href="/shu" className="card card-interactive card-featured group">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
+                  <Wrench className="w-6 h-6 text-[var(--color-accent)]" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-xl font-bold">术</h3>
+                    <span className="text-xs text-[var(--text-tertiary)]">Techniques</span>
+                  </div>
+                  <p className="text-sm text-[var(--text-tertiary)]">技术方法</p>
+                </div>
+              </div>
+              <p className="text-[var(--text-secondary)] mb-4">
+                Skills/MCP/Agent开发、大模型调用
+              </p>
+              <div className="flex items-center gap-2 text-sm text-[var(--color-accent)] font-medium">
+                <span>了解更多</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+
+            {/* 器 */}
+            <Link href="/qi" className="card card-interactive card-featured group">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
+                  <Puzzle className="w-6 h-6 text-[var(--color-accent)]" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-xl font-bold">器</h3>
+                    <span className="text-xs text-[var(--text-tertiary)]">Tools</span>
+                  </div>
+                  <p className="text-sm text-[var(--text-tertiary)]">Office Agent</p>
+                </div>
+              </div>
+              <p className="text-[var(--text-secondary)] mb-4">
+                Excel 本地 AI 插件，30+ 数据处理工具
+              </p>
+              <div className="flex items-center gap-2 text-sm text-[var(--color-accent)] font-medium">
+                <span>了解更多</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
           </div>
         </div>
-      </footer>
+      </section>
+
+      {/* 最近动态 - 列表形式 */}
+      <section className="section">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center justify-between mb-10">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">最近动态</h2>
+                <p className="text-[var(--text-tertiary)]">记录分享和探索的过程</p>
+              </div>
+              <Link 
+                href="/updates" 
+                className="text-sm text-[var(--color-accent)] font-medium hover:underline flex items-center gap-1"
+              >
+                <span>查看更多</span>
+                <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {/* 动态1 */}
+              <Link 
+                href="/updates" 
+                className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-primary)] hover:border-[var(--color-accent)] hover:bg-[var(--bg-secondary)] transition-all group"
+              >
+                <div className="flex-1">
+                  <h4 className="font-medium mb-1 group-hover:text-[var(--color-accent)] transition-colors">
+                    Office Agent 插件架构思考
+                  </h4>
+                  <p className="text-sm text-[var(--text-tertiary)]">
+                    如何用 VSTO 实现「一句话执行」工作流引擎？
+                  </p>
+                </div>
+                <span className="text-xs text-[var(--text-muted)] ml-4">今天</span>
+              </Link>
+
+              {/* 动态2 */}
+              <Link 
+                href="/updates" 
+                className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-primary)] hover:border-[var(--color-accent)] hover:bg-[var(--bg-secondary)] transition-all group"
+              >
+                <div className="flex-1">
+                  <h4 className="font-medium mb-1 group-hover:text-[var(--color-accent)] transition-colors">
+                    数据清洗 Skills 实践总结
+                  </h4>
+                  <p className="text-sm text-[var(--text-tertiary)]">
+                    整理了10个常用的数据清洗 Skills
+                  </p>
+                </div>
+                <span className="text-xs text-[var(--text-muted)] ml-4">3天前</span>
+              </Link>
+
+              {/* 动态3 */}
+              <Link 
+                href="/updates" 
+                className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-primary)] hover:border-[var(--color-accent)] hover:bg-[var(--bg-secondary)] transition-all group"
+              >
+                <div className="flex-1">
+                  <h4 className="font-medium mb-1 group-hover:text-[var(--color-accent)] transition-colors">
+                    Office Agent v1.2 功能介绍
+                  </h4>
+                  <p className="text-sm text-[var(--text-tertiary)]">
+                    新增侧边栏对话模式，优化选区识别逻辑
+                  </p>
+                </div>
+                <span className="text-xs text-[var(--text-muted)] ml-4">1周前</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }

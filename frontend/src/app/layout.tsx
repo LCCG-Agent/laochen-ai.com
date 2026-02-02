@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "老陈AI工坊 | 数据分析师如何用AI做分析",
-  description: "专注数据分析师的AI应用实践。涵盖AI工具案例、市场调研、最佳路径、竞品监控、资源工具等。帮助数据分析师提升效率,用AI赋能数据分析工作。",
-  keywords: "数据分析,AI工具,数据分析师,ChatGPT,Claude,AI赋能,数据分析案例,市场调研,竞品分析,AI提示词",
+  title: "老陈AI工坊 | 数据分析自动化知识分享",
+  description: "分享数分自动化体系、Skills/MCP/Agent工具清单、Office Agent插件使用方法。从道法术器，系统化提升数据处理效率。",
+  keywords: "数据分析,Office Agent,Excel插件,Skills,MCP,Agent工作流,数分自动化,老陈",
   authors: [{ name: "老陈" }],
   creator: "老陈",
   publisher: "老陈AI工坊",
   metadataBase: new URL("https://laochen-ai.com"),
+  icons: {
+    icon: [
+      { url: "/logo.jpg", sizes: "any" },
+      { url: "/logo.jpg", type: "image/jpeg" },
+    ],
+    apple: [
+      { url: "/logo.jpg" },
+    ],
+  },
   openGraph: {
-    title: "老陈AI工坊 | 数据分析师如何用AI做分析",
-    description: "专注数据分析师的AI应用实践。提供AI工具案例、市场调研、最佳路径、竞品监控、资源工具。",
+    title: "老陈AI工坊 | 数据分析自动化知识分享",
+    description: "分享数分自动化体系、工具清单、插件使用方法",
     url: "https://laochen-ai.com",
     siteName: "老陈AI工坊",
     locale: "zh_CN",
@@ -20,8 +28,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "老陈AI工坊 | 数据分析师如何用AI做分析",
-    description: "数据分析师的AI应用实践平台",
+    title: "老陈AI工坊 | 数据分析自动化知识分享",
+    description: "分享数分自动化体系、工具清单、插件使用方法",
   },
   robots: {
     index: true,
@@ -42,11 +50,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="zh-CN">
       <body className="antialiased">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        {/* 背景光晕效果 */}
+        <div className="bg-glow-top" aria-hidden="true" />
+        
+        {/* 主内容 */}
+        {children}
       </body>
     </html>
   );
