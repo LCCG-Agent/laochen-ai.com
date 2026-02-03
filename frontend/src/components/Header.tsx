@@ -18,10 +18,10 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { href: "/dao", label: "道" },
-    { href: "/fa", label: "法" },
-    { href: "/shu", label: "术" },
-    { href: "/qi", label: "器" },
+    { href: "/framework", label: "理念" },
+    { href: "/standards", label: "规范" },
+    { href: "/methods", label: "方法" },
+    { href: "/tools", label: "工具" },
     { href: "/updates", label: "动态" },
     { href: "/faq", label: "FAQ" },
   ];

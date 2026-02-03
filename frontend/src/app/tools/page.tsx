@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 
 /**
- * 器页面 - Office Agent 介绍
- * 定位：产品能力介绍，而非下载导向
+ * 工具页面 - Office Agent 介绍
+ * 原"器"页面，改名避免封建迷信词汇
  */
-export default function QiPage() {
+export default function ToolsPage() {
   // Office Agent 核心特性
   const coreFeatures = [
     {
@@ -108,7 +108,7 @@ export default function QiPage() {
             <div className="flex items-center gap-3 mb-6">
               <span className="tag tag-amber">工具</span>
               <span className="text-[var(--text-muted)]">/</span>
-              <span className="text-[var(--text-tertiary)]">器</span>
+              <span className="text-[var(--text-tertiary)]">产品</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Office Agent
@@ -276,19 +276,19 @@ export default function QiPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link 
-                href="/shu" 
+                href="/methods" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">术：技术方法</h3>
+                <h3 className="font-semibold mb-2">方法：技术技巧</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   了解 Skills、MCP、Agent 的实践方法
                 </p>
               </Link>
               <Link 
-                href="/dao" 
+                href="/framework" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">道：体系框架</h3>
+                <h3 className="font-semibold mb-2">理念：体系框架</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   回顾数据分析自动化的整体思维框架
                 </p>

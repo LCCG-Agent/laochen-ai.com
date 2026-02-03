@@ -16,10 +16,10 @@ import {
 } from "lucide-react";
 
 /**
- * 法页面 - 规则标准流程
- * 数据分析的"法"：口径、规范、SOP
+ * 规范页面 - 规则标准流程
+ * 原"法"页面，改名避免封建迷信词汇
  */
-export default function FaPage() {
+export default function StandardsPage() {
   // 5大核心规范
   const standards = [
     {
@@ -120,14 +120,14 @@ export default function FaPage() {
             <div className="flex items-center gap-3 mb-6">
               <span className="tag tag-blue">规范</span>
               <span className="text-[var(--text-muted)]">/</span>
-              <span className="text-[var(--text-tertiary)]">法</span>
+              <span className="text-[var(--text-tertiary)]">标准</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              数分之法
+              数分规范
             </h1>
             <p className="text-xl text-[var(--text-secondary)] leading-relaxed">
               规则、标准、流程的集合。<br />
-              建立数据分析的"法律体系"，让分析工作有章可循。
+              建立数据分析的标准体系，让分析工作有章可循。
             </p>
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function FaPage() {
             {articles.map((article, index) => (
               <Link 
                 key={index} 
-                href={`/fa/${index + 1}`}
+                href={`/standards/${index + 1}`}
                 className="flex items-center justify-between p-5 md:p-6 rounded-xl border border-[var(--border-primary)] hover:border-[var(--color-accent)] hover:bg-[var(--bg-secondary)] transition-all group min-h-[100px]"
               >
                 <div className="flex-1">
@@ -231,7 +231,7 @@ export default function FaPage() {
         </div>
       </section>
 
-      {/* 相关阅读 - 替代原来的跳转CTA */}
+      {/* 相关阅读 */}
       <section className="section bg-[var(--bg-secondary)]">
         <div className="container">
           <div className="max-w-4xl mx-auto">
@@ -240,19 +240,19 @@ export default function FaPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link 
-                href="/dao" 
+                href="/framework" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">道：体系框架</h3>
+                <h3 className="font-semibold mb-2">理念：体系框架</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   回顾数据分析自动化的整体思维框架
                 </p>
               </Link>
               <Link 
-                href="/shu" 
+                href="/methods" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">术：技术方法</h3>
+                <h3 className="font-semibold mb-2">方法：技术技巧</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   探索 Skills、MCP、Agent 的实践方法
                 </p>

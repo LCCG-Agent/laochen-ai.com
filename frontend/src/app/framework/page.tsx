@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 
 /**
- * 道页面 - 数分自动化体系框架
- * 参考：知识库 hub 页面结构
+ * 理念页面 - 数分自动化体系框架
+ * 原"道"页面，改名避免封建迷信词汇
  */
-export default function DaoPage() {
+export default function FrameworkPage() {
   // 6块体系地图数据
   const frameworkBlocks = [
     {
@@ -80,7 +80,7 @@ export default function DaoPage() {
     },
   ];
 
-  // 道栏目文章列表
+  // 文章列表
   const articles = [
     {
       title: "从0搭建数分自动化：一张图讲清体系",
@@ -105,7 +105,7 @@ export default function DaoPage() {
     },
   ];
 
-  // 推荐路线 - 移除下载导向，聚焦知识学习
+  // 推荐路线
   const learningPaths = [
     {
       duration: "第一步",
@@ -138,10 +138,10 @@ export default function DaoPage() {
             <div className="flex items-center gap-3 mb-6">
               <span className="tag tag-blue">体系</span>
               <span className="text-[var(--text-muted)]">/</span>
-              <span className="text-[var(--text-tertiary)]">道</span>
+              <span className="text-[var(--text-tertiary)]">理念</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              数分之道
+              数分理念
             </h1>
             <p className="text-xl text-[var(--text-secondary)] leading-relaxed">
               从0搭体系：自动化数分的框架、流程、标准。<br />
@@ -206,7 +206,7 @@ export default function DaoPage() {
             {articles.map((article, index) => (
               <Link 
                 key={index} 
-                href={`/dao/${index + 1}`}
+                href={`/framework/${index + 1}`}
                 className="card flex items-start gap-4 md:gap-6 p-5 md:p-8 hover:border-[var(--border-hover)] cursor-pointer group min-h-[120px]"
               >
                 <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[rgba(59,130,246,0.15)] flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -279,7 +279,7 @@ export default function DaoPage() {
         </div>
       </section>
 
-      {/* 相关阅读 - 替代原来的下载CTA */}
+      {/* 相关阅读 */}
       <section className="section">
         <div className="container">
           <div className="max-w-4xl mx-auto">
@@ -288,19 +288,19 @@ export default function DaoPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link 
-                href="/fa" 
+                href="/standards" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">法：规则标准</h3>
+                <h3 className="font-semibold mb-2">规范：标准流程</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   了解数据分析的口径定义与流程规范
                 </p>
               </Link>
               <Link 
-                href="/shu" 
+                href="/methods" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">术：技术方法</h3>
+                <h3 className="font-semibold mb-2">方法：技术技巧</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   探索 Skills、MCP、Agent 的实践方法
                 </p>

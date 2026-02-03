@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 
 /**
- * 术页面 - 工具清单库
- * 参考：Raycast Store 的可搜索/可筛选结构
+ * 方法页面 - 工具清单库
+ * 原"术"页面，改名避免封建迷信词汇
  */
-export default function ShuPage() {
+export default function MethodsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
 
@@ -227,12 +227,12 @@ export default function ShuPage() {
         <div className="container">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
-              <span className="tag tag-emerald">工具</span>
+              <span className="tag tag-emerald">方法</span>
               <span className="text-[var(--text-muted)]">/</span>
-              <span className="text-[var(--text-tertiary)]">术</span>
+              <span className="text-[var(--text-tertiary)]">技巧</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              数分之术
+              数分方法
             </h1>
             <p className="text-xl text-[var(--text-secondary)] leading-relaxed">
               Skills / MCP / Agent 的拿来就用清单与教程。<br />
@@ -258,7 +258,7 @@ export default function ShuPage() {
               />
             </div>
             
-            {/* 分类筛选 - 移动端优化点击区域 */}
+            {/* 分类筛选 */}
             <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
               {categories.map((cat) => (
                 <button
@@ -364,7 +364,7 @@ export default function ShuPage() {
             {articles.map((article, index) => (
               <Link 
                 key={index} 
-                href={`/shu/${index + 1}`}
+                href={`/methods/${index + 1}`}
                 className="card flex items-start gap-6 hover:border-[var(--border-hover)] cursor-pointer group"
               >
                 <div className="shrink-0 w-12 h-12 rounded-xl bg-[rgba(16,185,129,0.15)] flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -403,7 +403,7 @@ export default function ShuPage() {
         </div>
       </section>
 
-      {/* 相关阅读 - 替代原来的下载CTA */}
+      {/* 相关阅读 */}
       <section className="section">
         <div className="container">
           <div className="max-w-4xl mx-auto">
@@ -412,19 +412,19 @@ export default function ShuPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link 
-                href="/fa" 
+                href="/standards" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">法：规则标准</h3>
+                <h3 className="font-semibold mb-2">规范：标准流程</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   了解数据分析的口径定义与流程规范
                 </p>
               </Link>
               <Link 
-                href="/qi" 
+                href="/tools" 
                 className="card card-interactive p-6 min-h-[100px]"
               >
-                <h3 className="font-semibold mb-2">器：Office Agent</h3>
+                <h3 className="font-semibold mb-2">工具：Office Agent</h3>
                 <p className="text-sm text-[var(--text-tertiary)]">
                   了解 Excel 本地 AI 插件的核心能力
                 </p>

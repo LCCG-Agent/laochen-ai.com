@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "老陈AI工坊 | 数据分析自动化知识分享",
-  description: "分享数分自动化体系、Skills/MCP/Agent工具清单、Office Agent插件使用方法。从道法术器，系统化提升数据处理效率。",
+  description: "分享数分自动化体系、Skills/MCP/Agent工具清单、Office Agent插件使用方法。四层体系架构，系统化提升数据处理效率。",
   keywords: "数据分析,Office Agent,Excel插件,Skills,MCP,Agent工作流,数分自动化,老陈",
   authors: [{ name: "老陈" }],
   creator: "老陈",

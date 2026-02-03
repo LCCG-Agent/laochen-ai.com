@@ -232,9 +232,9 @@ export default function TemplateDetailPage({
           <p className="text-[var(--text-tertiary)] mb-8">
             你访问的模板可能已被移除或链接有误
           </p>
-          <Link href="/qi" className="btn btn-primary">
+          <Link href="/tools" className="btn btn-primary">
             <ArrowLeft className="w-4 h-4" />
-            <span>返回模板库</span>
+            <span>返回工具页</span>
           </Link>
         </div>
         <Footer />
@@ -252,11 +252,11 @@ export default function TemplateDetailPage({
       <div className="pt-24 pb-4">
         <div className="container">
           <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-            <Link href="/qi" className="hover:text-[var(--text-primary)] transition-colors">
-              器
+            <Link href="/tools" className="hover:text-[var(--text-primary)] transition-colors">
+              工具
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href="/qi" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/tools" className="hover:text-[var(--text-primary)] transition-colors">
               模板库
             </Link>
             <ChevronRight className="w-4 h-4" />
@@ -409,7 +409,7 @@ export default function TemplateDetailPage({
                 <Download className="w-5 h-5" />
                 <span>下载模板</span>
               </button>
-              <Link href="/qi" className="btn btn-secondary">
+              <Link href="/tools" className="btn btn-secondary">
                 <span>浏览更多模板</span>
               </Link>
             </div>

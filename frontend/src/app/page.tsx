@@ -21,7 +21,7 @@ import {
 export default function HomePage() {
   // 打字机效果 - 循环播放（打完后清空重新打）
   const [displayedText, setDisplayedText] = useState("");
-  const fullText = "一句话，我帮你";
+  const fullText = "一句话，搞定数据分析";
   
   useEffect(() => {
     let currentIndex = displayedText.length;
@@ -57,16 +57,16 @@ export default function HomePage() {
             
             {/* 副标题 */}
             <p className="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-2xl mx-auto">
-              数据分析就是这么简单
+              创造你的专属数据Agent
             </p>
 
             {/* CTA 按钮组 - 移动端优化 */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-              <Link href="/dao" className="btn btn-primary text-base px-8 py-4 min-h-[52px] w-full sm:w-auto">
+              <Link href="/framework" className="btn btn-primary text-base px-8 py-4 min-h-[52px] w-full sm:w-auto">
                 <span>了解我们的理念</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link href="/qi" className="btn btn-secondary text-base px-8 py-4 min-h-[52px] w-full sm:w-auto">
+              <Link href="/tools" className="btn btn-secondary text-base px-8 py-4 min-h-[52px] w-full sm:w-auto">
                 <Puzzle className="w-5 h-5" />
                 <span>认识 Office Agent</span>
               </Link>
@@ -88,12 +88,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 道法术器 - 四宫格布局 */}
+      {/* 四层体系 - 四宫格布局 */}
       <section className="section bg-[var(--bg-secondary)]">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              道法术器
+              四层体系
             </h2>
             <p className="text-lg text-[var(--text-tertiary)] max-w-2xl mx-auto">
               系统化知识体系，从理念到工具的完整路径
@@ -102,16 +102,16 @@ export default function HomePage() {
 
           {/* 2x2 网格布局 - 移动端优化点击区域 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
-            {/* 道 */}
-            <Link href="/dao" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
+            {/* 理念 */}
+            <Link href="/framework" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
                   <Compass className="w-6 h-6 md:w-7 md:h-7 text-[var(--color-accent)]" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl md:text-2xl font-bold">道</h3>
-                    <span className="text-xs text-[var(--text-tertiary)]">Philosophy</span>
+                    <h3 className="text-xl md:text-2xl font-bold">理念</h3>
+                    <span className="text-xs text-[var(--text-tertiary)]">Framework</span>
                   </div>
                   <p className="text-sm md:text-base text-[var(--text-tertiary)]">体系框架</p>
                 </div>
@@ -121,15 +121,15 @@ export default function HomePage() {
               </p>
             </Link>
 
-            {/* 法 */}
-            <Link href="/fa" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
+            {/* 规范 */}
+            <Link href="/standards" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
                   <BookOpen className="w-6 h-6 md:w-7 md:h-7 text-[var(--color-accent)]" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl md:text-2xl font-bold">法</h3>
+                    <h3 className="text-xl md:text-2xl font-bold">规范</h3>
                     <span className="text-xs text-[var(--text-tertiary)]">Standards</span>
                   </div>
                   <p className="text-sm md:text-base text-[var(--text-tertiary)]">规则标准</p>
@@ -140,18 +140,18 @@ export default function HomePage() {
               </p>
             </Link>
 
-            {/* 术 */}
-            <Link href="/shu" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
+            {/* 方法 */}
+            <Link href="/methods" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
                   <Wrench className="w-6 h-6 md:w-7 md:h-7 text-[var(--color-accent)]" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl md:text-2xl font-bold">术</h3>
-                    <span className="text-xs text-[var(--text-tertiary)]">Techniques</span>
+                    <h3 className="text-xl md:text-2xl font-bold">方法</h3>
+                    <span className="text-xs text-[var(--text-tertiary)]">Methods</span>
                   </div>
-                  <p className="text-sm md:text-base text-[var(--text-tertiary)]">技术方法</p>
+                  <p className="text-sm md:text-base text-[var(--text-tertiary)]">技术技巧</p>
                 </div>
               </div>
               <p className="text-[var(--text-secondary)] text-sm md:text-base">
@@ -159,15 +159,15 @@ export default function HomePage() {
               </p>
             </Link>
 
-            {/* 器 */}
-            <Link href="/qi" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
+            {/* 工具 */}
+            <Link href="/tools" className="card card-interactive card-featured group p-6 md:p-8 min-h-[160px]">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center shrink-0">
                   <Puzzle className="w-6 h-6 md:w-7 md:h-7 text-[var(--color-accent)]" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl md:text-2xl font-bold">器</h3>
+                    <h3 className="text-xl md:text-2xl font-bold">工具</h3>
                     <span className="text-xs text-[var(--text-tertiary)]">Tools</span>
                   </div>
                   <p className="text-sm md:text-base text-[var(--text-tertiary)]">Office Agent</p>

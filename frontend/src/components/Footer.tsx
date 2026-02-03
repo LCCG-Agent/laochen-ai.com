@@ -7,10 +7,10 @@ import Image from "next/image";
  */
 export default function Footer() {
   const footerLinks = [
-    { label: "道", href: "/dao" },
-    { label: "法", href: "/fa" },
-    { label: "术", href: "/shu" },
-    { label: "器", href: "/qi" },
+    { label: "理念", href: "/framework" },
+    { label: "规范", href: "/standards" },
+    { label: "方法", href: "/methods" },
+    { label: "工具", href: "/tools" },
     { label: "动态", href: "/updates" },
     { label: "FAQ", href: "/faq" },
   ];
